@@ -31,7 +31,10 @@ class Review extends Model
      */
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(User::class, 'customer_id')->where(
+            'role',
+            'customer'
+        );
     }
 
     /**
@@ -39,6 +42,9 @@ class Review extends Model
      */
     public function driver(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'driver_id');
+        return $this->belongsTo(User::class, 'driver_id')->where(
+            'role',
+            'driver'
+        );
     }
 }

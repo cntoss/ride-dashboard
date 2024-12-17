@@ -20,14 +20,21 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $recordTitleAttribute = 'name';
+    // protected static ?int $navigationSort = 0;
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('email')->email()->required()->unique(),
+                Forms\Components\TextInput::make('email')->email()->required()->unique(
+                    'users',
+                    ignoreRecord: true
+                ),
                 Forms\Components\TextInput::make('password')->password()->hiddenOn('edit')->required(),
-                Forms\Components\TextInput::make('phone_number')->numeric()->required(),
+                Forms\Components\TextInput::make('phone_number')->numeric()->required()->unique(
+                    'users',
+                    ignoreRecord: true
+                ),
                 Forms\Components\Select::make('role')
                     ->options([
                         'admin' => 'Admin',
@@ -44,10 +51,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('phone_number'),
+                Tables\Columns\TextColumn::make('role'),
             ])
             ->filters([
                 Tables\Filters\Filter::make('verified')
-                ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at'))
+                    ->query(fn(Builder $query): Builder => $query->whereNotNull('email_verified_at'))
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
