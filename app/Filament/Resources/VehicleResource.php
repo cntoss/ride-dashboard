@@ -6,7 +6,6 @@ use App\Filament\Resources\VehicleResource\Pages;
 use App\Filament\Resources\VehicleResource\RelationManagers;
 use App\Models\Vehicle;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,13 +23,25 @@ class VehicleResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('number')->required(),
-                Forms\Components\Select::make('brand')
-                    ->options([
-                        'ford' => 'Ford',
-                        'tesla' => 'Tesla Motor',
-                        'bmw' => "BMW"
-                    ])
+                Forms\Components\Select::make('driver_id')
+                    ->relationship('driver', 'name')
+                    ->required(),
+                Forms\Components\TextInput::make('vehicle_number')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('brand')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('model')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('color')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('year')
+                    ->required(),
+                Forms\Components\TextInput::make('registration_document')
+                    ->maxLength(255),
             ]);
     }
 
@@ -38,7 +49,28 @@ class VehicleResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('driver.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('vehicle_number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('brand')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('model')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('color')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('year'),
+                Tables\Columns\TextColumn::make('registration_document')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
