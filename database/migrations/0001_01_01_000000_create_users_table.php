@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone_number')->unique();
+            $table->string('phone_number')->nullable(); //for testing
             $table->enum('role', ['admin', 'customer', 'driver'])->default('admin');
             $table->string('profile_photo')->nullable();
             $table->string('vehicle_id')->nullable();

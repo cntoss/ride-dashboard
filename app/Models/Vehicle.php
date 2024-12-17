@@ -13,7 +13,7 @@ class Vehicle extends Model
     protected $fillable = [
         'driver_id',
         'vehicle_number',
-        'make',
+        'brand',
         'model',
         'color',
         'year',
